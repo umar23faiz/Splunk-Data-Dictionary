@@ -1,33 +1,51 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@splunk/react-ui/Button';
-
+import Overview from './pages/Overview';
 import { StyledContainer, StyledGreeting } from './FrontendStyles';
+import Ko from './pages/Ko';
+import DataInventory from './pages/DataInventory';
+import RadioBar, { RadioBarChangeHandler } from '@splunk/react-ui/RadioBar';
+
 
 const propTypes = {
     name: PropTypes.string,
 };
 
 const Frontend = ({ name = 'User' }) => {
-    const [counter, setCounter] = useState(0);
+    const customStyle = {
+        width: 1400,
+        height: 768,
+    };
+    const [value, setValue] = useState(1);
 
-    const message =
-        counter === 0
-            ? 'You should try clicking the button.'
-            : `You've clicked the button ${counter} time${counter > 1 ? 's' : ''}.`;
-
+    const handleChange = (e, { value: radioValue }) => {
+        setValue(radioValue);
+    };
     return (
-        <StyledContainer>
-            <StyledGreeting data-testid="greeting">Hello, {name}!</StyledGreeting>
-            <div>{message}</div>
-            <Button
-                label="Click here"
-                appearance="primary"
-                onClick={() => {
-                    setCounter(counter + 1);
-                }}
-            />
-        </StyledContainer>
+        <StyledContainer style={customStyle}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <RadioBar onChange={handleChange} value={value} style={{ width: 500 }}>
+                <RadioBar.Option value={1} label="OVERVIEW" />
+                <RadioBar.Option value={2} label="KOs" />
+                <RadioBar.Option value={3} label="Data Inventory" />
+            </RadioBar>
+            {value == 1 && (
+                <div>
+                    <Overview />
+                </div>
+            )}
+            {value == 2 && (
+                <div>
+                    <Ko />
+                </div>
+            )}
+            {value == 3 && (
+                <div>
+                    <DataInventory />
+                </div>
+            )}
+        </div>
+    </StyledContainer>
     );
 };
 
