@@ -4,8 +4,9 @@ import Heading from '@splunk/react-ui/Heading';
 import { useSplunkTheme } from '@splunk/themes';
 
 
-function Overview(){
+function Overview({ apiData }){
 
+    console.log(apiData)
     const { syntaxBlue } = useSplunkTheme();
     const colStyle: React.CSSProperties = {
         border: `1px solid ${syntaxBlue}`,
@@ -34,34 +35,34 @@ function Overview(){
 return(
    <div className="rounded-md" style={padding}>
             <div style={buttonWidth}>
-                n Custom Apps
+                {apiData.customApps} Custom Apps
             </div>
             <ColumnLayout  style={rowLayout} >
                 <ColumnLayout.Row>
                     <ColumnLayout.Column gutter={5} span={3} style={colStyle}>
-                        Dashboards
+                    {apiData.dashboard} Dashboards
                     </ColumnLayout.Column>
                     <ColumnLayout.Column span={3} style={colStyle}>
-                        Reports
+                    {apiData.report} Reports
                     </ColumnLayout.Column>
                     <ColumnLayout.Column span={3} style={colStyle}>
-                        Searches
+                    {apiData.report}  Searches
                     </ColumnLayout.Column>
                     <ColumnLayout.Column span={3} style={colStyle}>
-                        Lookups
+                    {apiData.lookup}  Lookups
                     </ColumnLayout.Column>
                 </ColumnLayout.Row>
             </ColumnLayout>
             <ColumnLayout  style={rowLayout} >
                 <ColumnLayout.Row>
                     <ColumnLayout.Column span={4} style={colStyle}>
-                       Unique fields
+                    {apiData.fields}   Unique fields
                     </ColumnLayout.Column>
                     <ColumnLayout.Column span={4} style={colStyle}>
-                       n Index | n1 Metrics | n2 Events
+                    {apiData.index}  Index
                     </ColumnLayout.Column>
                     <ColumnLayout.Column span={4} style={colStyle}>
-                        X SourceTypes | y Sources | Z Hosts 
+                    {apiData.sourceType}  SourceTypes 
                     </ColumnLayout.Column>
                 </ColumnLayout.Row>
             </ColumnLayout>

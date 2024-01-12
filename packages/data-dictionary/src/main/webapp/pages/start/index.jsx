@@ -10,8 +10,7 @@ getUserTheme()
     .then((theme) => {
         layout(
             <StyledContainer>
-                <StyledGreeting>Hello, from inside DataDictionary!</StyledGreeting>
-                <div>Your component will appear below.</div>
+                <StyledGreeting>Data Dictionary!</StyledGreeting>
                 <Frontend name="from inside Frontend" />
             </StyledContainer>,
             {

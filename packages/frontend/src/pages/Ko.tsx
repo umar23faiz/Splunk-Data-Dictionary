@@ -4,7 +4,8 @@ import Chip from '@splunk/react-ui/Chip';
 import Table from '@splunk/react-ui/Table';
 import ComboBox from '@splunk/react-ui/ComboBox';
 
-function Ko() {
+function Ko({ apiData }) {
+    console.log(apiData)
     const [value, setValue] = useState('');
 
     const handleChange = (e, { value: comboBoxValue }) => {
