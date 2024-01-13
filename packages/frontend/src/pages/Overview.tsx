@@ -6,7 +6,6 @@ import { useSplunkTheme } from '@splunk/themes';
 
 function Overview({ apiData }){
 
-    console.log(apiData)
     const { syntaxBlue } = useSplunkTheme();
     const colStyle: React.CSSProperties = {
         border: `1px solid ${syntaxBlue}`,

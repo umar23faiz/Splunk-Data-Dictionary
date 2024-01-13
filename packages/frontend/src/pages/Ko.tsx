@@ -13,7 +13,6 @@ function Ko({ apiData }) {
 
     useEffect(() => {
         setLoading(true);
-        console.log('hgf');
         if (value == 'List All'||value=="") {
             const mergedData = Object.values(apiData).flat();
             setMergedList(mergedData);
