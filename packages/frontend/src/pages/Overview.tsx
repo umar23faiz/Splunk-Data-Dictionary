@@ -11,7 +11,9 @@ function Overview({ apiData }){
         border: `1px solid ${syntaxBlue}`,
         padding: 10,
         minHeight: 80,
-        borderRadius: 6
+        borderRadius: 6,
+        boxShadow: `3px 3px 3px ${syntaxBlue}`
+
     };
     const rowLayout: React.CSSProperties = {
         paddingTop: 50,
@@ -27,7 +29,9 @@ function Overview({ apiData }){
         width: 190,
         marginBottom:19,
         marginLeft:5,
-        borderRadius: 6
+        borderRadius: 6,
+        boxShadow: `3px 3px 3px ${syntaxBlue}`
+
 
     };
     const divStyles = {
