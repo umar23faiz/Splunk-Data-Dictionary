@@ -5,22 +5,36 @@ import Table from '@splunk/react-ui/Table';
 import ComboBox from '@splunk/react-ui/ComboBox';
 import WaitSpinner from '@splunk/react-ui/WaitSpinner';
 
-function DataInventory({ apiData }){
+function DataInventory({ apiData }) {
     const [value, setValue] = useState('List All');
     const [mergedList, setMergedList]: any = useState();
     const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [username,setUsername] = useState('umar23faiz')
+    const [password,setPassword] = useState('umar23faiz')
+
+    const actionButtons = {
+        1: 'Share',
+        2: 'Delete',
+        3: 'Approve Access',
+    };
 
     useEffect(() => {
         setLoading(true);
-        if (value == 'List All'||value=="") {
+        if (value == 'List All' || value == '') {
             const mergedData = Object.values(apiData).flat();
             setMergedList(mergedData);
         } else {
-            setMergedList(apiData[value] ? apiData[value].filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) : []);
+            setMergedList(
+                apiData[value]
+                    ? apiData[value].filter((item) =>
+                          item.name.toLowerCase().includes(searchTerm.toLowerCase())
+                      )
+                    : []
+            );
         }
         setLoading(false);
-    }, [value,apiData]);
+    }, [value, apiData]);
 
     const handleInput = (e) => {
         const searchTerm = e.target.value;
@@ -41,75 +55,79 @@ function DataInventory({ apiData }){
     const toggle = <Button label="Dashboards" isMenu />;
     return (
         <div style={{ marginTop: 20 }}>
-        {loading || !mergedList ? (
-            <WaitSpinner size="medium" />
-        ) : (
-            <div>
+            {loading || !mergedList ? (
+                <WaitSpinner size="medium" />
+            ) : (
                 <div>
-                    <ComboBox inline onChange={handleChange} value={value}>
-                        <ComboBox.Option value="List All" />
-                        <ComboBox.Option value="Apps" />
-                        <ComboBox.Option value="Dashboards" />
-                        <ComboBox.Option value="Reports" />
-                        <ComboBox.Option value="Alerts" />
-                        <ComboBox.Option value="Lookups" />
-                        <ComboBox.Option value="Fields" />
-                        <ComboBox.Option value="Index" />
-                    </ComboBox>
-                    <Chip style={{ marginLeft: 60 }}>All Splunk Instances</Chip>
-                    <input
-                        style={{
-                            marginLeft: 60,
-                            padding: '8px',
-                            border: '1px solid black',
-                            borderRadius: '4px',
-                            fontSize: '14px',
-                            width: '200px',
-                        }}
-                        type="text"
-                        placeholder="Search..."
-                        onChange={handleInput}
-                    />
-                </div>
+                    <div>
+                        <ComboBox inline onChange={handleChange} value={value}>
+                            <ComboBox.Option value="List All" />
+                            <ComboBox.Option value="Lookups" />
+                            <ComboBox.Option value="Fields" />
+                            <ComboBox.Option value="Index" />
+                            <ComboBox.Option value="sourceType" />
+                        </ComboBox>
+                        <Chip style={{ marginLeft: 60 }}>All Splunk Instances</Chip>
+                        <input
+                            style={{
+                                marginLeft: 60,
+                                padding: '8px',
+                                border: '1px solid black',
+                                borderRadius: '4px',
+                                fontSize: '14px',
+                                width: '200px',
+                            }}
+                            type="text"
+                            placeholder="Search..."
+                            onChange={handleInput}
+                        />
+                    </div>
 
-                <div
-                    style={{
-                        marginTop: 150,
-                        height: '400px',
-                        overflowY: 'auto',
-                        overflowX: 'auto',
-                    }}
-                >
-                    <Table style={{ width: '100%' }} stripeRows>
-                        <Table.Head>
-                            <Table.HeadCell>ID</Table.HeadCell>
-                            <Table.HeadCell>Name</Table.HeadCell>
-                            <Table.HeadCell>Description</Table.HeadCell>
-                            <Table.HeadCell>Owner</Table.HeadCell>
-                            <Table.HeadCell>Meta-Label</Table.HeadCell>
-                            <Table.HeadCell>Classification</Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
-                        </Table.Head>
-                        <Table.Body>
-                            {mergedList.map((row) => (
-                                <Table.Row key={row.id}>
-                                    <Table.Cell>{row.index}</Table.Cell>
-                                    <Table.Cell>{row.name}</Table.Cell>
-                                    <Table.Cell>{row?.content?.label ? row.content.label : ""}</Table.Cell>
-                                    <Table.Cell>
-                                        {row.author}
-                                    </Table.Cell>
-                                    <Table.Cell align="right">{row.age}</Table.Cell>
-                                    <Table.Cell>{row.email}</Table.Cell>
-                                    <Table.Cell>{row.email}</Table.Cell>
-                                </Table.Row>
-                            ))}
-                        </Table.Body>
-                    </Table>
+                    <div
+                        style={{
+                            marginTop: 150,
+                            height: '400px',
+                            overflowY: 'auto',
+                            overflowX: 'auto',
+                        }}
+                    >
+                        <Table style={{ width: '100%' }} stripeRows>
+                            <Table.Head>
+                                <Table.HeadCell>ID</Table.HeadCell>
+                                <Table.HeadCell>Name</Table.HeadCell>
+                                <Table.HeadCell>Description</Table.HeadCell>
+                                <Table.HeadCell>Owner</Table.HeadCell>
+                                <Table.HeadCell>Meta-Label</Table.HeadCell>
+                                <Table.HeadCell>Classification</Table.HeadCell>
+                                <Table.HeadCell>Action</Table.HeadCell>
+                            </Table.Head>
+                            <Table.Body>
+                                {mergedList.map((row) => (
+                                    <Table.Row key={row.id}>
+                                        <Table.Cell>{row.index}</Table.Cell>
+                                        <Table.Cell>{row.name}</Table.Cell>
+                                        <Table.Cell>
+                                            {row?.content?.label ? row.content.label : ''}
+                                        </Table.Cell>
+                                        <Table.Cell>{row.author}</Table.Cell>
+                                        <Table.Cell align="right">{row.age}</Table.Cell>
+                                        <Table.Cell>{row.email}</Table.Cell>
+                                        <Table.Cell>
+                                            {' '}
+                                            <Button
+                                                label={
+                                                    actionButtons[Math.floor(Math.random() * 3) + 1]
+                                                }
+                                            />
+                                        </Table.Cell>
+                                    </Table.Row>
+                                ))}
+                            </Table.Body>
+                        </Table>
+                    </div>
                 </div>
-            </div>
-        )}
-    </div>
+            )}
+        </div>
     );
 }
 

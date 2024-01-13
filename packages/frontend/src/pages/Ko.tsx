@@ -10,17 +10,29 @@ function Ko({ apiData }) {
     const [mergedList, setMergedList]: any = useState();
     const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const actionButtons = {
+        1: 'Share',
+        2: 'Delete',
+        3: 'Request Access',
+    };
+    const randomNum = Math.floor(Math.random() * 3) + 1;
 
     useEffect(() => {
         setLoading(true);
-        if (value == 'List All'||value=="") {
+        if (value == 'List All' || value == '') {
             const mergedData = Object.values(apiData).flat();
             setMergedList(mergedData);
         } else {
-            setMergedList(apiData[value] ? apiData[value].filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) : []);
+            setMergedList(
+                apiData[value]
+                    ? apiData[value].filter((item) =>
+                          item.name.toLowerCase().includes(searchTerm.toLowerCase())
+                      )
+                    : []
+            );
         }
         setLoading(false);
-    }, [value,apiData]);
+    }, [value, apiData]);
 
     const handleInput = (e) => {
         const searchTerm = e.target.value;
@@ -52,9 +64,6 @@ function Ko({ apiData }) {
                             <ComboBox.Option value="Dashboards" />
                             <ComboBox.Option value="Reports" />
                             <ComboBox.Option value="Alerts" />
-                            <ComboBox.Option value="Lookups" />
-                            <ComboBox.Option value="Fields" />
-                            <ComboBox.Option value="Index" />
                         </ComboBox>
                         <Chip style={{ marginLeft: 60 }}>All Splunk Instances</Chip>
                         <input
@@ -95,13 +104,19 @@ function Ko({ apiData }) {
                                     <Table.Row key={row.id}>
                                         <Table.Cell>{row.index}</Table.Cell>
                                         <Table.Cell>{row.name}</Table.Cell>
-                                        <Table.Cell>{row?.content?.label ? row.content.label : ""}</Table.Cell>
                                         <Table.Cell>
-                                            {row.author}
+                                            {row?.content?.label ? row.content.label : ''}
                                         </Table.Cell>
+                                        <Table.Cell>{row.author}</Table.Cell>
                                         <Table.Cell align="right">{row.age}</Table.Cell>
                                         <Table.Cell>{row.email}</Table.Cell>
-                                        <Table.Cell>{row.email}</Table.Cell>
+                                        <Table.Cell>
+                                            <Button
+                                                label={
+                                                    actionButtons[Math.floor(Math.random() * 3) + 1]
+                                                }
+                                            />
+                                        </Table.Cell>
                                     </Table.Row>
                                 ))}
                             </Table.Body>

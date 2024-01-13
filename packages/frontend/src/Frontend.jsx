@@ -15,6 +15,7 @@ const propTypes = {
 const Frontend = ({ name = 'User' }) => {
     const [apiData, setApiData] = useState();
     const [loading, setLoading] = useState(false);
+    const [disabledRadioBar,setDisabledRadio] = useState(false)
 
     const customStyle = {
         width: 1400,
@@ -27,8 +28,12 @@ const Frontend = ({ name = 'User' }) => {
     };
     const fetchData = async () => {
         try {
+            const req={
+                username:"umar23faiz",
+                password:"umar23faiz"
+            }
             setLoading(true);
-            const response = await axios.get('http://localhost:3001/api/cached-overview'); // replace with your backend API endpoint
+            const response = await axios.post('http://localhost:3001/api/cached-overview',req); // replace with your backend API endpoint
             setApiData(response.data);
             setValue(1);
             setLoading(false);
@@ -42,6 +47,14 @@ const Frontend = ({ name = 'User' }) => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        if (apiData && apiData.userRole === 'admin') {
+            setDisabledRadio(false);
+        } else {
+            setDisabledRadio(true);
+        }
+    }, [apiData]);
+
     return (
         <StyledContainer style={customStyle}>
             {loading && !apiData ? (
@@ -51,7 +64,7 @@ const Frontend = ({ name = 'User' }) => {
                     <RadioBar onChange={handleChange} value={value} style={{ width: 500 }}>
                         <RadioBar.Option value={1} label="OVERVIEW" />
                         <RadioBar.Option value={2} label="KOs" />
-                        <RadioBar.Option value={3} label="Data Inventory" />
+                        <RadioBar.Option disabled={disabledRadioBar} value={3} label="Data Inventory" />
                     </RadioBar>
                     <div>
                         {value == 1 && (
@@ -66,7 +79,7 @@ const Frontend = ({ name = 'User' }) => {
                         )}
                         {value == 3 && (
                             <div>
-                                <DataInventory apiData={apiData.KO} />
+                                <DataInventory apiData={apiData.Lookup} />
                             </div>
                         )}
                     </div>
