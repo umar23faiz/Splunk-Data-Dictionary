@@ -28,7 +28,7 @@ const Frontend = ({ name = 'User' }) => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('http://localhost:3001/api/overview'); // replace with your backend API endpoint
+            const response = await axios.get('http://localhost:3001/api/cached-overview'); // replace with your backend API endpoint
             setApiData(response.data);
             console.log(response.data);
             setValue(1);

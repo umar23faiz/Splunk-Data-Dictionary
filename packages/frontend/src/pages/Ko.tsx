@@ -96,9 +96,9 @@ function Ko({ apiData }) {
                                     <Table.Row key={row.id}>
                                         <Table.Cell>{row.index}</Table.Cell>
                                         <Table.Cell>{row.name}</Table.Cell>
-                                        <Table.Cell>{row.qualifiedPath}</Table.Cell>
+                                        <Table.Cell>{row?.content?.label ? row.content.label : ""}</Table.Cell>
                                         <Table.Cell>
-                                            {row?.namespace?.owner ? row.namespace.owner : ''}
+                                            {row.author}
                                         </Table.Cell>
                                         <Table.Cell align="right">{row.age}</Table.Cell>
                                         <Table.Cell>{row.email}</Table.Cell>
