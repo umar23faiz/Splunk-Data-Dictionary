@@ -13,20 +13,6 @@ app.use(cors());
 const cache = new NodeCache();
 
 
-module.exports.handler = async (event) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: "Go Serverless v3.0! Your function executed successfully!",
-        input: event,
-      },
-      null,
-      2
-    ),
-  };
-};
-
 const req= {
   username:"umar23faiz",
   password:"umar23faiz"
@@ -161,6 +147,15 @@ cron.schedule("0 * * * *", () => fetchAndCacheOverviewData(req), {
   scheduled: true,
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Uncomment to run locally:
+// app.listen(PORT, () => {
+//   console.log(`Server is running on port ${PORT}`);
+// });
+
+const serverlessExpress = require('serverless-express');
+
+const server = serverlessExpress({ app });
+
+module.exports.handler = async (event, context) => {
+  return serverlessExpress.proxy(server, event, context, 'PROMISE').promise;
+};

@@ -10,5 +10,12 @@ functions:
     handler: index.handler
     events:
       - httpApi:
-          path: /
-          method: get
+          path: /api/overview
+          method: post
+
+plugins:
+  - serverless-express
+
+custom:
+  express:
+    app: ./index.app
