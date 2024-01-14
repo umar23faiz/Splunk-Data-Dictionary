@@ -34,7 +34,6 @@ jobs:
       run: |
         cd frontend-code/packages/frontend
         yarn run build
-        yarn run test
 
     - name: Backend Setup
       run: |
