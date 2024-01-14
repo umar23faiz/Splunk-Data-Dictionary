@@ -1,0 +1,57 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.15.0]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install Yarn
+      run: npm install -g yarn@1.22.0
+
+    - name: Frontend Setup
+      run: |
+        cd frontend-code
+        yarn run setup
+
+    - name: Frontend Build and Test
+      run: |
+        cd frontend-code/packages/frontend
+        yarn run build
+        yarn run test
+
+    - name: Backend Setup
+      run: |
+        cd backend
+        npm install
+
+    - name: Backend Run
+      run: |
+        cd backend/aws-node-http-api-project
+        node index.js
+
+    
+  # deploy:
+  #   runs-on: ubuntu-latest
+
+  #   needs: build
+
+  #   steps:
+  #   - name: Deploy to AWS (replace with deployment steps)
+

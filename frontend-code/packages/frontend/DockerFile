@@ -1,0 +1,32 @@
+# Use the official Node.js image as the base image
+FROM node:14.15.0 as frontend
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Copy the package.json and package-lock.json files to the container
+COPY packages/frontend/package*.json ./
+
+# Install dependencies
+RUN yarn run setup
+
+# Copy the rest of the application code to the container
+COPY packages/frontend/ .
+
+# Build the frontend application
+RUN yarn run build
+
+# Stage for the final image
+FROM node:14.15.0-alpine
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Copy the built files from the frontend image
+COPY --from=frontend /app/build /app/build
+
+# Expose port 3000 for the frontend
+EXPOSE 3000
+
+# Command to run the application
+CMD ["yarn", "start:demo"]

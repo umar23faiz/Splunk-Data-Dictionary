@@ -1,0 +1,20 @@
+# Use the official Node.js image as the base image
+FROM node:14.15.0 as backend
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Copy the package.json and package-lock.json files to the container
+COPY backend/package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code to the container
+COPY backend/aws-node-http-api-project/ .
+
+# Expose port 3001 for the backend
+EXPOSE 3001
+
+# Command to run the backend application
+CMD ["node", "index.js"]
