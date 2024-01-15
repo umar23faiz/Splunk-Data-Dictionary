@@ -64,7 +64,9 @@ jobs:
           npm install
 
       - name: Run ESLint
-        run: npm run lint
+        run: |
+          cd backend
+          npm run lint
 
   # deploy:
   #   runs-on: ubuntu-latest
