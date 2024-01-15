@@ -51,7 +51,9 @@ jobs:
           npm install eslint
 
       - name: Run ESLint
-        run: npx eslint .
+        run: |
+          cd backend
+          npx eslint .
 
   # deploy:
   #   runs-on: ubuntu-latest
