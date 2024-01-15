@@ -4,6 +4,8 @@ const cors = require("cors");
 const https = require("https");
 const NodeCache = require("node-cache");
 const cron = require("node-cron");
+const dotenv = require('dotenv');
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -18,16 +20,17 @@ const req= {
   password:"umar23faiz"
 }
 
+// This function is to just test the functionality through posstman and not being called from anywhere
 app.post("/api/overview", async (req, res) => {
-  let view = await fetchDataFromUrl("https://localhost:8089/servicesNS/-/-/data/ui/views",req.body);
-  let customApp = await fetchDataFromUrl("https://localhost:8089/services/apps/local",req.body);
-  let reports = await fetchDataFromUrl("https://localhost:8089/servicesNS/-/-/saved/searches",req.body);
-  let fields = await fetchDataFromUrl("https://localhost:8089/services/search/fields",req.body);
-  let index = await fetchDataFromUrl("https://localhost:8089/servicesNS/-/-/data/indexes",req.body);
-  let lookup = await fetchDataFromUrl("https://localhost:8089/servicesNS/-/-/data/lookup-table-files",req.body);
-  let alert = await fetchDataFromUrl("https://localhost:8089/services/alerts/fired_alerts/",req.body);
-  let sourceTypes = await fetchDataFromUrl("https://localhost:8089/services/saved/sourcetypes",req.body);
-  let userRole = await fetchDataFromUrl("https://localhost:8089/services/search/jobs/export?search=| rest /services/authentication/current-context splunk_server=local | table title roles",req.body);
+  let view = await fetchDataFromUrl(process.env.SPLUNK_URL+"/servicesNS/-/-/data/ui/views",req.body);
+  let customApp = await fetchDataFromUrl(process.env.SPLUNK_URL+"/services/apps/local",req.body);
+  let reports = await fetchDataFromUrl(process.env.SPLUNK_URL+"/servicesNS/-/-/saved/searches",req.body);
+  let fields = await fetchDataFromUrl(process.env.SPLUNK_URL+"/services/search/fields",req.body);
+  let index = await fetchDataFromUrl(process.env.SPLUNK_URL+"/servicesNS/-/-/data/indexes",req.body);
+  let lookup = await fetchDataFromUrl(process.env.SPLUNK_URL+"/servicesNS/-/-/data/lookup-table-files",req.body);
+  let alert = await fetchDataFromUrl(process.env.SPLUNK_URL+"/services/alerts/fired_alerts/",req.body);
+  let sourceTypes = await fetchDataFromUrl(process.env.SPLUNK_URL+"/services/saved/sourcetypes",req.body);
+  let userRole = await fetchDataFromUrl(process.env.SPLUNK_URL+"/services/search/jobs/export?search=| rest /services/authentication/current-context splunk_server=local | table title roles",req.body);
   const response = {
     KO: {
       Dashboards: view.entry,
@@ -102,15 +105,15 @@ app.post("/api/cached-overview", (req, res) => {
 });
 const fetchAndCacheOverviewData = async (req) => {
   console.log("Running /api/overview cron job");
-  let view = await fetchDataFromUrl("https://localhost:8089/servicesNS/-/-/data/ui/views",req);
-  let customApp = await fetchDataFromUrl("https://localhost:8089/services/apps/local",req);
-  let reports = await fetchDataFromUrl("https://localhost:8089/servicesNS/-/-/saved/searches",req);
-  let fields = await fetchDataFromUrl("https://localhost:8089/services/search/fields",req);
-  let index = await fetchDataFromUrl("https://localhost:8089/servicesNS/-/-/data/indexes",req);
-  let lookup = await fetchDataFromUrl("https://localhost:8089/servicesNS/-/-/data/lookup-table-files",req);
-  let alert = await fetchDataFromUrl("https://localhost:8089/services/alerts/fired_alerts/",req);
-  let sourceTypes = await fetchDataFromUrl("https://localhost:8089/services/saved/sourcetypes",req);
-  let userRole = await fetchDataFromUrl("https://localhost:8089/services/search/jobs/export?search=| rest /services/authentication/current-context splunk_server=local | table title roles",req);
+  let view = await fetchDataFromUrl(process.env.SPLUNK_URL+"/servicesNS/-/-/data/ui/views",req);
+  let customApp = await fetchDataFromUrl(process.env.SPLUNK_URL+"/services/apps/local",req);
+  let reports = await fetchDataFromUrl(process.env.SPLUNK_URL+"/servicesNS/-/-/saved/searches",req);
+  let fields = await fetchDataFromUrl(process.env.SPLUNK_URL+"/services/search/fields",req);
+  let index = await fetchDataFromUrl(process.env.SPLUNK_URL+"/servicesNS/-/-/data/indexes",req);
+  let lookup = await fetchDataFromUrl(process.env.SPLUNK_URL+"/servicesNS/-/-/data/lookup-table-files",req);
+  let alert = await fetchDataFromUrl(process.env.SPLUNK_URL+"/services/alerts/fired_alerts/",req);
+  let sourceTypes = await fetchDataFromUrl(process.env.SPLUNK_URL+"/services/saved/sourcetypes",req);
+  let userRole = await fetchDataFromUrl(process.env.SPLUNK_URL+"/services/search/jobs/export?search=| rest /services/authentication/current-context splunk_server=local | table title roles",req);
   const response = {
     KO: {
       Dashboards: view.entry,
@@ -152,7 +155,7 @@ cron.schedule("0 * * * *", () => fetchAndCacheOverviewData(req), {
 //   console.log(`Server is running on port ${PORT}`);
 // });
 
-const serverlessExpress = require('serverless-express');
+const serverlessExpress = require('@vendia/serverless-express');
 
 const server = serverlessExpress({ app });
 
