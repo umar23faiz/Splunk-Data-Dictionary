@@ -44,24 +44,11 @@ jobs:
         run: |
           cd backend/aws-node-http-api-project
         ## node index.js
-  lint:
-    runs-on: ubuntu-latest
-
-    needs: build
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-
       - name: Install Dependencies
         run: |
           cd backend
           npm install
+          npm install eslint
 
       - name: Run ESLint
         run: |
