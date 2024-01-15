@@ -43,7 +43,7 @@ jobs:
     - name: Backend Run
       run: |
         cd backend/aws-node-http-api-project
-        node index.js
+      ## node index.js
 
     
   # deploy:
